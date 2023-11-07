@@ -9,11 +9,14 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    <ul>
-        <li><code><a href="{{path('app_register')}}">register</a></code></li>
-        <li><code><a href="{{ 'C:/Users/Kostas/OneDrive/Desktop/symfony project/my_project_directory/templates/index/index.html.twig'|file_link(0) }}">login</a></code></li>
-    </ul>
+    <h1>Hello!</h1>
+    {% if app.user %}
+    <h1>{{app.user.username}}</h1><br>
+    <a href="{{path('app_logout')}}">logout</a>
+    {% endif %}
+        <ul>
+            <li><code><a href="{{path('app_register')}}">register</a></code></li>
+            <li><code><a href="{{path('app_login')}}">login</a></code></li>
+        </ul>
 </div>
 {% endblock %}
