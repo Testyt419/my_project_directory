@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
+{% block title %}HomePage{% endblock %}
 
 {% block body %}
 <style>
@@ -12,6 +12,7 @@
     <h1>Hello!</h1>
     {% if app.user %}
     <h1>{{app.user.username}}</h1><br>
+    <a href="{{path('app_events')}}">events</a><br>
     <a href="{{path('app_logout')}}">logout</a>
     {% endif %}
         <ul>
