@@ -9,11 +9,29 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>{{event.name}}</h1>
+    <h1>{{ event.name }}</h1>
     <ul>
-        <li> {{event.descr}}</li>
-        <li> {{event.sdate | date('d-m-y') }}</li>
-        <li> {{event.rdate | date('d-m-y')}}</li>
+        <li>{{ event.descr }}</li>
+        <li>{{ event.sdate | date('d-m-y') }}</li>
+        <li>{{ event.rdate | date('d-m-y') }}</li>
     </ul>
+        {% if app.user not in event.users %}
+            <a href="{{path('event_join', { id: event.id })}}"><button class="btn">join</button></a>
+        {% else %}
+            <a href="{{path('event_leave', { id: event.id })}}"><button class="btn">leave</button></a>
+        {% endif %}
+    <ul>
+        prizes:
+
+        {% for prize in event.prizes %}
+            <li>{{prize.name}}</li>
+        {% endfor %}
+            Current participants:
+        {% for user in event.users %}
+            <li>{{user.Username}}</li>
+        {% endfor %}
+
+    </ul>
+
 </div>
 {% endblock %}

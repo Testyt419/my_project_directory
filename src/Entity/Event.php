@@ -31,9 +31,13 @@ class Event
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'events')]
     private Collection $users;
 
+    #[ORM\OneToMany(mappedBy: 'event', targetEntity: PrizeNames::class)]
+    private Collection $Prizes;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->Prizes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,6 +113,36 @@ class Event
     public function removeUser(User $user): static
     {
         $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PrizeNames>
+     */
+    public function getPrizes(): Collection
+    {
+        return $this->Prizes;
+    }
+
+    public function addPrize(PrizeNames $prize): static
+    {
+        if (!$this->Prizes->contains($prize)) {
+            $this->Prizes->add($prize);
+            $prize->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrize(PrizeNames $prize): static
+    {
+        if ($this->Prizes->removeElement($prize)) {
+            // set the owning side to null (unless already changed)
+            if ($prize->getEvent() === $this) {
+                $prize->setEvent(null);
+            }
+        }
 
         return $this;
     }
