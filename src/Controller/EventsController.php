@@ -2,27 +2,43 @@
 
 namespace App\Controller;
 
-use app\Entity\Event;
+use App\Entity\Event;
+use App\Form\RegEventFormType;
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
 class EventsController extends AbstractController
 {
     #[Route('/events/{id}', name: 'event_show')]
-    public function show(EventRepository $eventRepository, int $id): Response
+    public function show(EntityManagerInterface $EntityManager, int $id, Request $request): Response
     {
-        $event = $eventRepository->find($id);
-
+        /** @var \App\Entity\Event $event */
+        $event = $EntityManager->getRepository(Event::class)->find($id);
+        
         if (!$event) {
             throw $this->createNotFoundException(
                 'No event found for id '.$id
             );
         }
 
-        return $this->render('events/show.html.twig', ['event' => $event]);
+        $form = $this->createform(RegEventFormType::class);
+        $form->handleRequest($request);
+        if($form->isSubmitted()){
+            if($form->getData()['isAttending']){
+                $event->addUser($this->GetUser());
+                $EntityManager->flush($event); 
+            }
+            else{
+                $event->removeUser($this->getUser());
+                $EntityManager->flush($event);
+            }
+        }
+        
+        return $this->render('events/show.html.twig', ['event' => $event, 'form' => $form]);
     }
 
     #[Route('/events', name: 'app_events')]

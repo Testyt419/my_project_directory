@@ -15,5 +15,12 @@
         <li> {{event.sdate | date('d-m-y') }}</li>
         <li> {{event.rdate | date('d-m-y')}}</li>
     </ul>
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+
+        {{ form_row(form.isAttending) }}
+
+        <button type="submit" class="btn">submit</button>
+    {{ form_end(form) }}
 </div>
 {% endblock %}
