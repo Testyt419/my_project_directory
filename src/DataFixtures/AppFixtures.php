@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Event;
+use App\Entity\PrizeNames;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -19,6 +20,17 @@ class AppFixtures extends Fixture
         $event->setSDate(now());
         $manager->persist($event);
 
+        $event->addPrize($this->makePrizeForEvent($manager, 'pydariukas'));
+        $event->addPrize($this->makePrizeForEvent($manager, 'debiliukas'));
+
         $manager->flush();
+    }
+
+    private function makePrizeForEvent(ObjectManager $manager, string $name='pydariukas'): PrizeNames
+    {
+        $prizename = new PrizeNames;
+        $prizename->setName($name);
+        $manager->persist($prizename);
+        return $prizename;
     }
 }
