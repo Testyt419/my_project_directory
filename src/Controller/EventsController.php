@@ -37,8 +37,15 @@ class EventsController extends AbstractController
                 $EntityManager->flush($event);
             }
         }
+
+        $namearray=[];
+        $userarray=$event->getUsers();
+        foreach($userarray as $user){
+            array_push($namearray, $user->getUsername());
+        }
         
-        return $this->render('events/show.html.twig', ['event' => $event, 'form' => $form]);
+
+        return $this->render('events/show.html.twig', ['event' => $event, 'form' => $form, 'namearray' => $namearray]);
     }
 
     #[Route('/events', name: 'app_events')]

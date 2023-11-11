@@ -22,5 +22,10 @@
 
         <button type="submit" class="btn">submit</button>
     {{ form_end(form) }}
+    <ul>
+        {% for name in namearray %}
+            <li>{{name}}</li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}
